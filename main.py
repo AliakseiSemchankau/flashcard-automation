@@ -8,7 +8,16 @@ from api_googledocs import GoogleDocsClient
 from constants import EN_FR_PROMPT
 
 # Constants for Docx API Client
-from constants import TEMPLATE_PATH, FLASHCARDS_FOLDER, FLASHCARDS_PREFIX, ROWS, COLS, BASE_FONT, TARGET_FONT, FONT_SIZE
+from constants import (
+    TEMPLATE_PATH,
+    FLASHCARDS_FOLDER,
+    FLASHCARDS_PREFIX,
+    ROWS,
+    COLS,
+    BASE_FONT,
+    TARGET_FONT,
+    FONT_SIZE,
+)
 
 # Constants for Google Docs API Client
 from constants import SCOPES
@@ -36,7 +45,7 @@ def get_user_input() -> tuple[str, list[str]]:
         except FileNotFoundError:
             print(f"Error: File '{words_source}' not found.")
             return "error", []
-    
+
     words = [word.strip() for word in words_source.split()]
     return topic, words
 
@@ -64,7 +73,12 @@ def convert_tuples_to_records(
     bold_target_words = []
 
     for word in words:
-        for target_sentence, base_sentence, bold_target_word, bold_base_word in words_to_tuples[word]:
+        for (
+            target_sentence,
+            base_sentence,
+            bold_target_word,
+            bold_base_word,
+        ) in words_to_tuples[word]:
             target_sentences.append(target_sentence)
             base_sentences.append(base_sentence)
             bold_target_words.append(bold_target_word)
@@ -102,7 +116,7 @@ def main():
         n_cols=COLS,
         base_font=BASE_FONT,
         target_font=TARGET_FONT,
-        font_size=FONT_SIZE
+        font_size=FONT_SIZE,
     )
 
     googledocs_client = GoogleDocsClient(scopes=SCOPES)
@@ -137,67 +151,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-def get_test_data():
-    english = [
-        "The soft sound of footsteps on the carpet created a peaceful atmosphere.",
-        "The room was silent except for the muted murmur of distant voices.",
-        "His deep voice gave an authoritative tone to his speech.",
-        "The deep sound of the organ echoed throughout the cathedral.",
-        "A light breeze made the leaves rustle softly.",
-        "A light melody played in the background, almost inaudible.",
-        "A piercing scream echoed through the silent night.",
-        "The piercing whistling of the wind signaled an approaching storm.",
-        "A prolonged horn sound annoyed the entire neighborhood.",
-        "His curt response showed his impatience.",
-        "The sharp crack of the whip echoed in the arena.",
-        "The shrill sound of the alarm startled everyone.",
-    ]
-
-    english_words = [
-        "soft",
-        "muted",
-        "authoritative",
-        "deep",
-        "deep",
-        "light",
-        "light",
-        "piercing",
-        "prolonged",
-        "curt",
-        "sharp",
-        "shrill",
-    ]
-
-    french = [
-        "Sa voix grave donnait un air d’autorité à son discours.",
-        "La pièce était silencieuse, sauf pour le murmure feutré des voix lointaines.",
-        "Le bruit feutré des pas sur la moquette créait une ambiance paisible.",
-        "Une légère mélodie jouait en arrière-plan, presque inaudible.",
-        "Une brise légère faisait frémir les feuilles avec un doux son.",
-        "Le son grave de l’orgue résonnait dans toute la cathédrale.",
-        "Un bruit prolongé de klaxon a agacé tout le quartier.",
-        "Le sifflement perçant du vent annonçait une tempête imminente.",
-        "Un cri perçant a retenti dans la nuit silencieuse.",
-        "Le bruit strident de l’alarme a fait sursauter tout le monde.",
-        "Le claquement sec du fouet résonnait dans l’arène.",
-        "Sa réponse sèche montrait son impatience.",
-    ]
-
-    french_words = [
-        "grave",
-        "feutré",
-        "feutré",
-        "légère",
-        "légère",
-        "grave",
-        "prolongé",
-        "perçant",
-        "perçant",
-        "strident",
-        "sec",
-        "sèche",
-    ]
-
-    return [english, french], [english_words, french_words], ["Georgia", "Comfortaa"]
