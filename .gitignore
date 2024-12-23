@@ -1,0 +1,7 @@
+secrets/
+word-files/
+word-lists
+
+__pycache__/
+*.pyc
+*.pyo
