@@ -77,7 +77,7 @@ class GoogleDocsClient:
         """
         if not self.drive_service:
             print("Google Drive service is not initialized. Aborting upload.")
-            return
+            return "error"
 
         # Prepare file metadata for Google Docs
         file_metadata = {
@@ -93,7 +93,7 @@ class GoogleDocsClient:
             )
         except Exception as e:
             print(f"Failed to prepare file for upload: {docx_path}. Error: {e}")
-            return
+            return "error"
 
         # Attempt file upload and conversion
         try:
@@ -101,13 +101,7 @@ class GoogleDocsClient:
                 body=file_metadata, media_body=media, fields="id"
             ).execute()
             file_id = uploaded_file.get("id")
-            print(
-                f"File uploaded successfully:\n"
-                f" - Local file: {docx_path}\n"
-                f" - Google Doc name: {google_doc_name}\n"
-                f" - File ID: {file_id}"
-            )
-            return
+            return file_id
         except Exception as e:
             print(f"Failed to upload {docx_path} to Google Docs: {e}")
-            return
+            return "error"

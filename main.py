@@ -33,7 +33,7 @@ def get_user_input() -> tuple[str, list[str]]:
     topic = input("What topic do you want to practice? ")
     words_source = input(
         "Please provide words using one of the following options:\n"
-        "1) Enter a filename (e.g., words.txt)\n"
+        "1) Enter a .txt filename (e.g., words.txt)\n"
         "2) Enter words separated by spaces.\n"
     )
 
@@ -65,7 +65,7 @@ def convert_tuples_to_records(
             - bold_base_word
 
     Returns:
-        dict[str, list[str]]: A dictionary with base/target sentences, and bold words
+        dict[str, list[str]]: A dictionary with base/target sentences, bold words, and number of records
     """
     base_sentences = []
     target_sentences = []
@@ -122,14 +122,17 @@ def main():
     googledocs_client = GoogleDocsClient(scopes=SCOPES)
 
     # Get user input (or test input for debugging)
-    topic, words = get_test_input()  # Use this for testing
-    # topic, words = get_user_input()  # Production input
+    # topic, words = get_test_input()
+    topic, words = get_user_input()
 
     if topic == "error" or not words:
         print("Error: Invalid input. Exiting.")
         return
 
-    print(f"Topic: {topic}, words: {', '.join(words)}")
+    print(
+        f"Topic: {topic}\n"
+        f"Words: {', '.join(words)}"
+    )
 
     # Generate examples from ChatGPT
     words_to_tuples = chatgpt_client.generate_tuples(words)
@@ -145,8 +148,15 @@ def main():
     file_paths_and_names = docx_client.write_records(topic, records)
 
     # Upload each Word document to Google Docs
-    for filepath, filename in file_paths_and_names:
-        googledocs_client.upload_docx(filepath, filename)
+    for docx_path, google_doc_name in file_paths_and_names:
+        file_id = googledocs_client.upload_docx(docx_path, google_doc_name)
+        if file_id != "error":
+            print(
+                f"File uploaded successfully:\n"
+                f" - Local file: {docx_path}\n"
+                f" - Google Doc name: {google_doc_name}\n"
+                f" - File link: https://docs.google.com/document/d/{file_id}/edit"
+            )
 
 
 if __name__ == "__main__":

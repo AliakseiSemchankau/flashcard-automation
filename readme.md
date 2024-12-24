@@ -36,7 +36,6 @@ pip install python-docx
 pip install openai google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 ```
 
-
 #### **3. Configure Secrets**
 - Create a secrets directory:
 ```bash
