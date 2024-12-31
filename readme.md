@@ -87,6 +87,14 @@ python main.py
     2. Format the sentences into a Word document based on the template.
     3. Upload the document to Google Docs and provide the file URL or ID.
 
+- - - 
+
+#### **Example**
+
+The following files were generated for the prompted topic `forms` and word source `word-lists/forms.txt`:
+- `word-files/flashcards-forms-1.docx`
+- `word-files/flashcards-forms-2.docx`
+
 - - -
 
 ### **Project Structure**
